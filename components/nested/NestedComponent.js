@@ -486,23 +486,23 @@ function (_BaseComponent) {
         noUpdateEvent: true
       }, source); // Iterate through all components and check conditions, and calculate values.
       
+    
+      /*
+      this.getComponents().forEach(function (comp) {
+        // If a source is provided and is the same as the source, then skip.
+        // if (source && source.id === comp.id) {
+        //   return;
+        // }
 
-      
-        this.getComponents().forEach(function (comp) {
-          // If a source is provided and is the same as the source, then skip.
-          // if (source && source.id === comp.id) {
-          //   return;
-          // }
-  
-          changed |= comp.calculateValue(data, {
-            noUpdateEvent: true
-          });
-  
-          if (!flags.noValidate) {
-            valid &= comp.checkValidity(data);
-          }
-        }); // Trigger the change if the values changed.
-      
+        changed |= comp.calculateValue(data, {
+          noUpdateEvent: true
+        });
+
+        if (!flags.noValidate) {
+          valid &= comp.checkValidity(data);
+        }
+      }); // Trigger the change if the values changed.
+      */
 
       if (changed) {
         this.triggerChange(flags);
