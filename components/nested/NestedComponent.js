@@ -486,7 +486,7 @@ function (_BaseComponent) {
         noUpdateEvent: true
       }, source); // Iterate through all components and check conditions, and calculate values.
       
-    
+      console.log('USING MODDED FORMIOJS CODE');
       /*
       this.getComponents().forEach(function (comp) {
         // If a source is provided and is the same as the source, then skip.
