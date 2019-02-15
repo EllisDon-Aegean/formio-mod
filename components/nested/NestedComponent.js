@@ -487,6 +487,15 @@ function (_BaseComponent) {
       }, source); // Iterate through all components and check conditions, and calculate values.
       
       console.log('USING MODDED FORMIOJS CODE');
+      
+      if (
+        source.key === 'sectionScheduleTable4OriginalDate' || 
+        source.key === 'sectionScheduleTable4RevisedDate' || 
+        source.key === 'tableTable2ActualSubstantialCompletionDate' ||
+        source.key === 'status'
+      ) {
+        this.checkConditions()
+      }
       /*
       this.getComponents().forEach(function (comp) {
         // If a source is provided and is the same as the source, then skip.
