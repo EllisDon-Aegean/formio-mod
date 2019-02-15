@@ -486,7 +486,7 @@ function (_BaseComponent) {
         noUpdateEvent: true
       }, source); // Iterate through all components and check conditions, and calculate values.
       
-      console.log('USING MODDED FORMIOJS CODE');
+      console.log('USING MODDED FORMIOJS CODE...');
       
       if (source && (
         source.key === 'sectionScheduleTable4OriginalDate' || 
