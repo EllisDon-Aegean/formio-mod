@@ -491,8 +491,9 @@ function (_BaseComponent) {
       if (source && (
         source.key === 'sectionScheduleTable4OriginalDate' || 
         source.key === 'sectionScheduleTable4RevisedDate' || 
-        source.key === 'tableTable2ActualSubstantialCompletionDate' ||
-        source.key === 'status'
+        source.key === 'tableTable2ActualSubstantialCompletionDate' 
+        // ||
+        // source.key === 'status'
         )
       ) {
         this.checkConditions()
