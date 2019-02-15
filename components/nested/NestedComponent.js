@@ -488,11 +488,12 @@ function (_BaseComponent) {
       
       console.log('USING MODDED FORMIOJS CODE');
       
-      if (
+      if (source && (
         source.key === 'sectionScheduleTable4OriginalDate' || 
         source.key === 'sectionScheduleTable4RevisedDate' || 
         source.key === 'tableTable2ActualSubstantialCompletionDate' ||
         source.key === 'status'
+        )
       ) {
         this.checkConditions()
       }
