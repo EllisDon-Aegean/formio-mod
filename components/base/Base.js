@@ -890,6 +890,12 @@ function (_Component) {
       this.checkConditions();
       this.restoreValue();
 
+      try {
+        window.initFormMappings();
+      } catch (e) {
+        console.warn(e);
+      }
+
       if (this.root) {
         this.root.onChange();
       }
@@ -905,6 +911,12 @@ function (_Component) {
       this.splice(index);
       this.buildRows();
       this.restoreValue();
+
+      try {
+        window.initFormMappings();
+      } catch (e) {
+        console.warn(e);
+      }
 
       if (this.root) {
         this.root.onChange();
