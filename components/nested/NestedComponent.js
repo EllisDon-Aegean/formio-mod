@@ -489,15 +489,22 @@ function (_BaseComponent) {
       console.log('USING MODDED FORMIOJS CODE...');
       
       if (source && (
+        source.key === 'currentContractValue' ||
+        source.key === 'amountBilledToDate' ||
+        source.key === 'amountSpentToDate'
+      )) {
+        // execute the conditional function directly
+        eval(source.component.customConditional);
+      }
+
+      if (source && (
         source.key === 'sectionScheduleTable4OriginalDate' || 
         source.key === 'sectionScheduleTable4RevisedDate' || 
-        source.key === 'tableTable2ActualSubstantialCompletionDate' 
-        // ||
-        // source.key === 'status'
-        )
-      ) {
-        this.checkConditions()
+        source.key === 'tableTable2ActualSubstantialCompletionDate'
+      )) {
+        this.checkConditions();
       }
+
       /*
       this.getComponents().forEach(function (comp) {
         // If a source is provided and is the same as the source, then skip.
