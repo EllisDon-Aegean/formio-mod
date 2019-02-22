@@ -491,7 +491,13 @@ function (_BaseComponent) {
       if (source && (
         source.key === 'currentContractValue' ||
         source.key === 'amountBilledToDate' ||
-        source.key === 'amountSpentToDate'
+        source.key === 'amountSpentToDate' ||
+        source.key === 'changes-AllQuantity' ||
+        source.key === 'changes-AllApprovedCorsQuantity' ||
+        source.key === 'deltaQuantity' ||
+        source.key === 'changes-AllValue' ||
+        source.key === 'changes-AllApprovedCorsValue' ||
+        source.key === 'deltaValue' 
       )) {
         // execute the conditional function directly
         eval(source.component.customConditional);
