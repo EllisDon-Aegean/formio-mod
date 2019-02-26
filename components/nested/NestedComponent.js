@@ -497,19 +497,24 @@ function (_BaseComponent) {
         source.key === 'deltaQuantity' ||
         source.key === 'changes-AllValue' ||
         source.key === 'changes-AllApprovedCorsValue' ||
-        source.key === 'deltaValue' 
-      )) {
-        // execute the conditional function directly
-        eval(source.component.customConditional);
-      }
-
-      if (source && (
+        source.key === 'deltaValue' ||
         source.key === 'sectionScheduleTable4OriginalDate' || 
         source.key === 'sectionScheduleTable4RevisedDate' || 
         source.key === 'tableTable2ActualSubstantialCompletionDate'
       )) {
-        this.checkConditions();
+        // execute the conditional function directly
+        ((instance, row) => {
+          eval(source.component.customConditional); 
+        })(source, source.data)
       }
+
+     // if (source && (
+      //  source.key === 'sectionScheduleTable4OriginalDate' || 
+       // source.key === 'sectionScheduleTable4RevisedDate' || 
+       // source.key === 'tableTable2ActualSubstantialCompletionDate'
+     // )) {
+       // this.checkConditions();
+     // }
 
       /*
       this.getComponents().forEach(function (comp) {
