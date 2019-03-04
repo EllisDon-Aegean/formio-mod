@@ -485,9 +485,17 @@ function (_BaseComponent) {
       var changed = this.updateValue({
         noUpdateEvent: true
       }, source); // Iterate through all components and check conditions, and calculate values.
-      
+
       console.log('USING MODDED FORMIOJS CODE...');
-      
+
+      try {
+        /* Custom code */
+        window.addEventListenersForDataGrids();
+        /* ----------- */
+      } catch(e) {
+        console.warn(e);
+      }
+
       if (source && (
         source.key === 'currentContractValue' ||
         source.key === 'amountBilledToDate' ||
@@ -498,19 +506,19 @@ function (_BaseComponent) {
         source.key === 'changes-AllValue' ||
         source.key === 'changes-AllApprovedCorsValue' ||
         source.key === 'deltaValue' ||
-        source.key === 'sectionScheduleTable4OriginalDate' || 
-        source.key === 'sectionScheduleTable4RevisedDate' || 
+        source.key === 'sectionScheduleTable4OriginalDate' ||
+        source.key === 'sectionScheduleTable4RevisedDate' ||
         source.key === 'tableTable2ActualSubstantialCompletionDate'
       )) {
         // execute the conditional function directly
         ((instance, row) => {
-          eval(source.component.customConditional); 
+          eval(source.component.customConditional);
         })(source, source.data)
       }
 
      // if (source && (
-      //  source.key === 'sectionScheduleTable4OriginalDate' || 
-       // source.key === 'sectionScheduleTable4RevisedDate' || 
+      //  source.key === 'sectionScheduleTable4OriginalDate' ||
+       // source.key === 'sectionScheduleTable4RevisedDate' ||
        // source.key === 'tableTable2ActualSubstantialCompletionDate'
      // )) {
        // this.checkConditions();
