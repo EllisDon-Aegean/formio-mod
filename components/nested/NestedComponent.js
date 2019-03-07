@@ -500,12 +500,12 @@ function (_BaseComponent) {
         source.key === 'currentContractValue' ||
         source.key === 'amountBilledToDate' ||
         source.key === 'amountSpentToDate' ||
-        source.key === 'changes-AllQuantity' ||
-        source.key === 'changes-AllApprovedCorsQuantity' ||
-        source.key === 'deltaQuantity' ||
-        source.key === 'changes-AllValue' ||
-        source.key === 'changes-AllApprovedCorsValue' ||
-        source.key === 'deltaValue' ||
+        //source.key === 'changes-AllQuantity' ||
+        //source.key === 'changes-AllApprovedCorsQuantity' ||
+        //source.key === 'deltaQuantity' ||
+        //source.key === 'changes-AllValue' ||
+        //source.key === 'changes-AllApprovedCorsValue' ||
+        //source.key === 'deltaValue' ||
         source.key === 'sectionScheduleTable4OriginalDate' ||
         source.key === 'sectionScheduleTable4RevisedDate' ||
         source.key === 'tableTable2ActualSubstantialCompletionDate'
