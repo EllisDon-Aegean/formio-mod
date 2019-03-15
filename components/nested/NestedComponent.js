@@ -487,7 +487,12 @@ function (_BaseComponent) {
       }, source); // Iterate through all components and check conditions, and calculate values.
 
       console.log('USING MODDED FORMIOJS CODE...');
-
+      
+      try {	
+        window.addEventListenersForDataGrids();	
+      } catch(e) {	
+        console.warn(e);	
+      }
 
       if (source && (
         source.key === 'currentContractValue' ||
@@ -509,13 +514,13 @@ function (_BaseComponent) {
         })(source, source.data)
       }
 
-     // if (source && (
-      //  source.key === 'sectionScheduleTable4OriginalDate' ||
-       // source.key === 'sectionScheduleTable4RevisedDate' ||
-       // source.key === 'tableTable2ActualSubstantialCompletionDate'
-     // )) {
-       // this.checkConditions();
-     // }
+      // if (source && (
+      //   source.key === 'sectionScheduleTable4OriginalDate' ||
+      //   source.key === 'sectionScheduleTable4RevisedDate' ||
+      //   source.key === 'tableTable2ActualSubstantialCompletionDate'
+      // )) {
+      //   this.checkConditions();
+      // }
 
       /*
       this.getComponents().forEach(function (comp) {
