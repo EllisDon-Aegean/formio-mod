@@ -488,13 +488,6 @@ function (_BaseComponent) {
 
       console.log('USING MODDED FORMIOJS CODE...');
 
-      try {
-        /* Custom code */
-        window.addEventListenersForDataGrids();
-        /* ----------- */
-      } catch(e) {
-        console.warn(e);
-      }
 
       if (source && (
         source.key === 'currentContractValue' ||
