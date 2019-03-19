@@ -70,6 +70,8 @@ function getOptions(options) {
     icons: _Formio.default.icons || '',
     i18next: _i18next.default,
     saveDraft: false,
+    onChangeCallback: null,
+    submitFormCallback: null,
     saveDraftThrottle: 5000
   });
 
@@ -462,7 +464,16 @@ function (_NestedComponent) {
         }
       });
     }
-  }, {
+  }, 
+  
+  {
+    key: "setCallback",
+    value: function setCallback(target, callback) {
+      this.options[`${target}Callback`] = callback;
+    }
+  },
+
+  {
     key: "addShortcut",
     value: function addShortcut(element, shortcut) {
       if (!shortcut || !/^([A-Z]|Enter|Esc)$/i.test(shortcut)) {
@@ -810,7 +821,6 @@ function (_NestedComponent) {
         };
       } // Metadata needs to be available before setValue
 
-
       this._submission.metadata = submission.metadata || {}; // Set the timezone in the options if available.
 
       if (!this.options.submissionTimezone && submission.metadata && submission.metadata.timezone) {
@@ -1092,6 +1102,7 @@ function (_NestedComponent) {
   }, {
     key: "onSubmissionError",
     value: function onSubmissionError(error) {
+
       if (error) {
         // Normalize the error.
         if (typeof error === 'string') {
@@ -1119,37 +1130,43 @@ function (_NestedComponent) {
   }, {
     key: "onChange",
     value: function onChange(flags, changed) {
+      
+      let { onChangeCallback } = this.options
+      let callback = onChangeCallback && typeof onChangeCallback === "function";
+      
       var isChangeEventEmitted = false; // For any change events, clear any custom errors for that component.
-
+      
       if (changed && changed.component) {
         this.customErrors = this.customErrors.filter(function (err) {
           return err.component && err.component !== changed.component.key;
         });
       }
-
+      
       _get(_getPrototypeOf(Webform.prototype), "onChange", this).call(this, flags, true);
 
       var value = _lodash.default.clone(this._submission);
-
+      
       value.changed = changed;
       value.isValid = this.checkData(value.data, flags, changed ? changed.instance : null, true);
       this.showElement(true);
       this.loading = false; // See if we need to save the draft of the form.
-
+      
       if (flags && flags.modified && this.options.saveDraft) {
         this.triggerSaveDraft();
       }
-
+      
       if (!flags || !flags.noEmit) {
         this.emit('change', value);
         isChangeEventEmitted = true;
       } // The form is initialized after the first change event occurs.
-
-
+      
+      
       if (isChangeEventEmitted && !this.initialized) {
         this.emit('initialized');
         this.initialized = true;
       }
+
+      if (callback) onChangeCallback(changed);
     }
   }, {
     key: "checkData",
@@ -1198,10 +1215,15 @@ function (_NestedComponent) {
     value: function submitForm() {
       var _this15 = this;
 
+      let { submitFormCallback } = _this15.options
+      let callback = submitFormCallback && typeof submitFormCallback === "function";
+
       var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       return new _nativePromiseOnly.default(function (resolve, reject) {
+
         // Read-only forms should never submit.
         if (_this15.options.readOnly) {
+          if (callback) submitFormCallback(true);
           return resolve({
             submission: _this15.submission,
             saved: false
@@ -1228,14 +1250,17 @@ function (_NestedComponent) {
 
         _this15.hook('beforeSubmit', submission, function (err) {
           if (err) {
+            if (callback) submitFormCallback(false);
             return reject(err);
           }
 
           if (!isDraft && !submission.data) {
+            if (callback) submitFormCallback(false);
             return reject('Invalid Submission');
           }
 
           if (!isDraft && !_this15.checkValidity(submission.data, true)) {
+            if (callback) submitFormCallback(false);
             return reject();
           }
 
@@ -1262,6 +1287,7 @@ function (_NestedComponent) {
               err = Array.isArray(err) ? err : [err]; // Set as custom errors.
 
               _this15.customErrors = err;
+              if (callback) submitFormCallback(false);
               return reject();
             }
 
@@ -1274,6 +1300,7 @@ function (_NestedComponent) {
             }
 
             if (_this15.nosubmit || !submitFormio) {
+              if (callback) submitFormCallback(true);
               return resolve({
                 submission: submission,
                 saved: false
@@ -1283,6 +1310,7 @@ function (_NestedComponent) {
 
             var submitMethod = submitFormio.actionUrl ? 'saveAction' : 'saveSubmission';
             submitFormio[submitMethod](submission).then(function (result) {
+              if (callback) submitFormCallback(true);
               return resolve({
                 submission: result,
                 saved: true
