@@ -1884,6 +1884,22 @@ function (_Component) {
       var _this15 = this;
 
       this.addEventListener(input, this.info.changeEvent, function () {
+
+        if (_this15.type === "number" && !this.value) {
+          let webform = _this15.root;
+          let key = _this15.component.key;
+          _this15.data[key] = "";
+
+          let changed = {
+            component: _this15.component,
+            flags: { modified: true },
+            instance: _this15
+          }
+          if (webform.options && webform.options.onChangeCallback) {
+            webform.options.onChangeCallback(changed);
+          }
+        }
+
         return _this15.updateValue({
           modified: true
         });
