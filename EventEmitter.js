@@ -66,7 +66,7 @@ function (_EventEmitter) {
     _classCallCheck(this, EventEmitter);
 
     var _conf$loadLimit = conf.loadLimit,
-        loadLimit = _conf$loadLimit === void 0 ? 50 : _conf$loadLimit,
+        loadLimit = _conf$loadLimit === void 0 ? 100 : _conf$loadLimit, // original load limit: 50
         _conf$eventsSafeInter = conf.eventsSafeInterval,
         eventsSafeInterval = _conf$eventsSafeInter === void 0 ? 300 : _conf$eventsSafeInter,
         _conf$pause = conf.pause,
