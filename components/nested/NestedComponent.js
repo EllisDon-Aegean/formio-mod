@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
+let messageDisplayed = false;
+
 require("core-js/modules/es6.array.from");
 
 require("core-js/modules/es6.regexp.to-string");
@@ -486,7 +488,10 @@ function (_BaseComponent) {
         noUpdateEvent: true
       }, source); // Iterate through all components and check conditions, and calculate values.
 
-      console.log('USING MODDED FORMIOJS CODE...');
+      if (!messageDisplayed) {
+        console.log('USING MODDED FORMIOJS CODE...');
+        messageDisplayed = true;
+      }
       
       try {	
         window.addEventListenersForDataGrids();	
