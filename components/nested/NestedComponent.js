@@ -511,7 +511,8 @@ function (_BaseComponent) {
         source.key === 'deltaValue' ||
         source.key === 'sectionScheduleTable4OriginalDate' ||
         source.key === 'sectionScheduleTable4RevisedDate' ||
-        source.key === 'tableTable2ActualSubstantialCompletionDate'
+        source.key === 'tableTable2ActualSubstantialCompletionDate' ||
+        source.key === 'table14TableDate'
       )) {
         // execute the conditional function directly
         ((instance, row) => {
