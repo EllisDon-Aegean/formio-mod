@@ -2178,7 +2178,7 @@ function (_Component) {
 
   }, {
     key: "updateValue",
-    value: function updateValue(flags, value) {
+    value: function updateValue(flags, value, bypassOnChange) {
       if (!this.hasInput) {
         return false;
       }
@@ -2199,7 +2199,7 @@ function (_Component) {
         this.updateViewOnlyValue(newValue);
       }
 
-      this.updateOnChange(flags, changed);
+      bypassOnChange ? null : this.updateOnChange(flags, changed);
       return changed;
     }
   }, {
@@ -2506,7 +2506,7 @@ function (_Component) {
 
   }, {
     key: "setValue",
-    value: function setValue(value, flags) {
+    value: function setValue(value, flags, bypassOnChange) {
       flags = this.getFlags.apply(this, arguments);
 
       if (!this.hasInput) {
@@ -2526,7 +2526,8 @@ function (_Component) {
         }
       }
 
-      return this.updateValue(flags);
+      return this.updateValue(flags, bypassOnChange);
+
     }
     /**
      * Resets the value of this component.
