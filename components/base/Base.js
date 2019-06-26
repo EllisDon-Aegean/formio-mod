@@ -2521,6 +2521,14 @@ function (_Component) {
      */
 
   }, {
+    key: "setCustomAttributes",
+    value: function setCustomAttributes(node, isEmpty) {
+      let input = node.element;
+      input.setAttribute("inputType", node.type);
+      input.setAttribute("isEmpty", isEmpty);
+      if (isEmpty) input.setAttribute("class", `${input.className} iuxp--empty`);
+    }
+  }, {
     key: "setValue",
     value: function setValue(value, flags, bypassOnChange) {
       flags = this.getFlags.apply(this, arguments);
