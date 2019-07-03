@@ -2522,10 +2522,12 @@ function (_Component) {
 
   }, {
     key: "setCustomAttributes",
-    value: function setCustomAttributes(node, isEmpty) {
+    value: function setCustomAttributes(node, isEmpty, section) {
       let input = node.element;
       input.setAttribute("inputType", node.type);
       input.setAttribute("isEmpty", isEmpty);
+      input.setAttribute("section", section ? section : 'NO_SECTION');
+      input.setAttribute("dataKey", node.component.key);
       if (isEmpty) input.setAttribute("class", `${input.className} iuxp--empty`);
     }
   }, {
