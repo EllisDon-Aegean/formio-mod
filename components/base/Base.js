@@ -2546,18 +2546,23 @@ function (_Component) {
     }
   }, {
     key: "setCustomAttributes",
-    value: function setCustomAttributes(node, isEmpty, section, datagrid) {
+    value: function setCustomAttributes(node, isEmpty, section) {
       let input = node.element;
       input.setAttribute("inputType", node.type);
       input.setAttribute("isEmpty", isEmpty);
       input.setAttribute("section", section ? section : 'NO_SECTION');
       input.setAttribute("dataKey", node.component.key);
       if (isEmpty) input.setAttribute("class", `${input.className} iuxp--empty`);
+
+      // this is for automation, we just need to add a unique id to the form control (for dropdowns)
+      if (node.type === 'select') {
+        let formControl = node.element.querySelector('.form-control');
+        formControl.setAttribute('id', `formio-select--${node.component.key}`);
+      }
     }
   }, {
     key: "evaluateOriginalValue",
     value: function evaluateOriginalValue(newValue, originalValue) {
-      console.log('this:', this);
       let node = this;
 
       let compareValues = (node, val1, val2) => {
