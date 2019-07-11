@@ -2521,14 +2521,140 @@ function (_Component) {
      */
 
   }, {
+    key: "addMoneyCellMethods",
+    value: function addMoneyCellMethods(node, originalValue) {
+      let input = node.element.querySelector('input');
+
+      let addCentsToMoney = (value) => {
+        value = value.replace(/,/g, '');
+        value = value.replace(/_/g, '');
+        if (value !== '') value = Number(value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+        return value;
+      }
+
+      setTimeout(() => input.value = addCentsToMoney(input.value), 0);
+
+      input.addEventListener('blur', () => {
+        let value = input.value;
+        value = addCentsToMoney(value);
+        input.value = value;
+        // to re-evaluate the blue dot
+        if (originalValue) {
+          setTimeout(() => node.evaluateOriginalValue(value, originalValue), 0);
+        }
+      })
+    }
+  }, {
     key: "setCustomAttributes",
-    value: function setCustomAttributes(node, isEmpty, section) {
+    value: function setCustomAttributes(node, isEmpty, section, datagrid) {
       let input = node.element;
       input.setAttribute("inputType", node.type);
       input.setAttribute("isEmpty", isEmpty);
       input.setAttribute("section", section ? section : 'NO_SECTION');
       input.setAttribute("dataKey", node.component.key);
       if (isEmpty) input.setAttribute("class", `${input.className} iuxp--empty`);
+    }
+  }, {
+    key: "evaluateOriginalValue",
+    value: function evaluateOriginalValue(newValue, originalValue) {
+      console.log('this:', this);
+      let node = this;
+
+      let compareValues = (node, val1, val2) => {
+        if (node.component.type === 'number' && typeof val1 === 'string' && typeof val2 !== 'string') {
+          if (val1.indexOf('.') !== 0) {
+            val2 = parseFloat(val2).toFixed(2);
+            val1 = val1.replace(/,/g, '');
+            val1 = val1.replace('.00', '');
+            val2 = val2.replace('.00', '');
+          }
+        }
+        
+        if (node.component.type === "datetime" && val1) {
+          val1 = val1.split('T')[0];
+          val1 = val1.replace(/-/g, ' / ');
+        }
+        if (node.component.type === "datetime" && val2) {
+          val2 = val2.split('T')[0];
+          val2 = val2.replace(/-/g, ' / ');
+        }
+
+        if (val1 != val2) {
+          node.element.classList.add('autopopulatedField--edited');
+        } else {
+          node.element.classList.remove('autopopulatedField--edited');
+        }
+      }
+
+      compareValues(node, newValue, originalValue);
+    }
+  }, {
+    key: "setOriginalValue",
+    value: function setOriginalValue(node, value, ogValue) {
+
+      node.element.classList.add('autopopulatedField');
+      
+      let formatNumber = (value) => {
+        value = `${value}`;
+        let decimal = value.split('.')[1];
+        value = value.split('.')[0];
+        let count = 0;
+        let newValue = '';
+        for (let i = value.length-1; i >= 0; i--) {
+          if (i !== value.length-1 && count%3 === 0) {
+            newValue += `,${value[i]}`;
+          } else {
+            newValue += value[i];
+          }
+          count++;
+        }
+        value = newValue.split("").reverse().join("");
+        if (decimal) value += `.${decimal}`;
+        else value += '.00';
+        return value;
+      }
+
+      let { type, key, delimiter } = node.component
+      let input = node.element;
+      input.setAttribute("originalValue", ogValue);
+
+      if (node.component.type === "datetime" && ogValue) {
+        ogValue = ogValue.split('T')[0];
+        ogValue = ogValue.replace(/-/g, ' / ');
+      }
+      if (node.component.type === "datetime" && value) {
+        value = value.split('T')[0];
+        value = value.replace(/-/g, ' / ');
+      }
+
+      if (type === "number" && delimiter === true && (node.element.classList.contains('money-cell') || node.element.classList.contains('money-cell--small'))) {
+        ogValue = formatNumber(ogValue);
+        value = formatNumber(value);
+      }
+
+      let textRight = node.element.classList.contains('input-group-addon-text-right');
+      $(input).append(`
+        <div class="test-og-value ${textRight ? 'test-og-value--push-left' : ''}">
+          <div class="test-og-value__txt-box">
+            <p>Original Value: ${ogValue}</p>
+          </div>
+          <div class="test-og-value__arrow"></div>
+        </div>
+      `);
+
+      node.evaluateOriginalValue(value, ogValue);
+
+      let eventType = node.component.type !== 'datetime' ? 'keyup' : 'change';
+      input.addEventListener(eventType, (e) => {
+        node.evaluateOriginalValue(e.target.value, ogValue)
+      });
+      // date elements also need an event listener on the child input as well (mostly used for detecting when user clears the date field)
+      if (node.component.type === "datetime") {
+        let dateElement = input.querySelector('.form-control.form-control.input');
+        dateElement.addEventListener(eventType, (e) => {
+          node.evaluateOriginalValue(e.target.value, ogValue)
+        });
+      }
     }
   }, {
     key: "setValue",
