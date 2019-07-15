@@ -2554,10 +2554,18 @@ function (_Component) {
       input.setAttribute("dataKey", node.component.key);
       if (isEmpty) input.setAttribute("class", `${input.className} iuxp--empty`);
 
-      // this is for automation, we just need to add a unique id to the form control (for dropdowns)
       if (node.type === 'select') {
+        // this is for automation, we just need to add a unique id to the form control (for dropdowns)
         let formControl = node.element.querySelector('.form-control');
         formControl.setAttribute('id', `formio-select--${node.component.key}`);
+
+        // this is to clear the dropdown filter
+        node.choices.config.searchResultLimit = node.component.data.values.length;
+        formControl.addEventListener('click', () => {
+          const inputField = node.element.querySelector('.choices__input.choices__input--cloned');
+          if (inputField) inputField.value = '';
+          setTimeout(() => node.setItems(node.component.data.values));
+        })
       }
     }
   }, {
