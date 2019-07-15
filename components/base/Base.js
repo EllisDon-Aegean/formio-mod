@@ -2522,7 +2522,8 @@ function (_Component) {
 
   }, {
     key: "addMoneyCellMethods",
-    value: function addMoneyCellMethods(node, originalValue) {
+    value: function addMoneyCellMethods(originalValue) {
+      let node = this;
       let input = node.element.querySelector('input');
 
       let addCentsToMoney = (value) => {
@@ -2533,7 +2534,6 @@ function (_Component) {
       }
 
       setTimeout(() => input.value = addCentsToMoney(input.value), 0);
-
       input.addEventListener('blur', () => {
         let value = input.value;
         value = addCentsToMoney(value);
@@ -2596,12 +2596,15 @@ function (_Component) {
   }, {
     key: "setOriginalValue",
     value: function setOriginalValue(node, value, ogValue) {
-
-      node.element.classList.add('autopopulatedField');
       
+      node.element.classList.add('autopopulatedField');
+
       let formatNumber = (value) => {
         value = `${value}`;
         let decimal = value.split('.')[1];
+        if (decimal && decimal.length === 1) {
+          decimal = `${decimal}0`;
+        }
         value = value.split('.')[0];
         let count = 0;
         let newValue = '';
@@ -2635,11 +2638,22 @@ function (_Component) {
       if (type === "number" && delimiter === true && (node.element.classList.contains('money-cell') || node.element.classList.contains('money-cell--small'))) {
         ogValue = formatNumber(ogValue);
         value = formatNumber(value);
+        // re-adding even listener with formatted value
+        node.addMoneyCellMethods(ogValue);
       }
 
       let textRight = node.element.classList.contains('input-group-addon-text-right');
+      let lableIsHidden = (element) => {
+        return element.classList.contains('control-label--hidden');
+      }
+      let labelHidden = false;
+      let label = node.element.querySelector('label');
+      if (label && lableIsHidden(label)) {
+        labelHidden = true;
+      }
+
       $(input).append(`
-        <div class="test-og-value ${textRight ? 'test-og-value--push-left' : ''}">
+        <div class="test-og-value ${textRight ? 'test-og-value--push-left' : ''} ${labelHidden ? 'test-og-value--push-up' : ''}">
           <div class="test-og-value__txt-box">
             <p>Original Value: ${ogValue}</p>
           </div>
@@ -2651,7 +2665,7 @@ function (_Component) {
 
       let eventType = node.component.type !== 'datetime' ? 'keyup' : 'change';
       input.addEventListener(eventType, (e) => {
-        node.evaluateOriginalValue(e.target.value, ogValue)
+        node.evaluateOriginalValue(e.target.value, ogValue);
       });
       // date elements also need an event listener on the child input as well (mostly used for detecting when user clears the date field)
       if (node.component.type === "datetime") {
