@@ -2522,7 +2522,8 @@ function (_Component) {
 
   }, {
     key: "addMoneyCellMethods",
-    value: function addMoneyCellMethods(node, originalValue) {
+    value: function addMoneyCellMethods(originalValue) {
+      let node = this;
       let input = node.element.querySelector('input');
 
       let addCentsToMoney = (value) => {
@@ -2533,7 +2534,6 @@ function (_Component) {
       }
 
       setTimeout(() => input.value = addCentsToMoney(input.value), 0);
-
       input.addEventListener('blur', () => {
         let value = input.value;
         value = addCentsToMoney(value);
@@ -2639,7 +2639,7 @@ function (_Component) {
         ogValue = formatNumber(ogValue);
         value = formatNumber(value);
         // re-adding even listener with formatted value
-        node.addMoneyCellMethods(node, ogValue);
+        node.addMoneyCellMethods(ogValue);
       }
 
       let textRight = node.element.classList.contains('input-group-addon-text-right');
