@@ -2563,8 +2563,10 @@ function (_Component) {
         node.choices.config.searchResultLimit = node.component.data.values.length;
         formControl.addEventListener('click', () => {
           const inputField = node.element.querySelector('.choices__input.choices__input--cloned');
-          if (inputField) inputField.value = '';
-          setTimeout(() => node.setItems(node.component.data.values));
+          if(inputField) {
+            inputField.value = '';
+            setTimeout(() => node.setItems(node.component.data.values), 0);
+          }
         })
       }
     }
