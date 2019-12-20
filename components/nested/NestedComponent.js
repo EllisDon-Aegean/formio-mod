@@ -512,7 +512,8 @@ function (_BaseComponent) {
         source.key === 'sectionScheduleTable4OriginalDate' ||
         source.key === 'sectionScheduleTable4RevisedDate' ||
         source.key === 'tableTable2ActualSubstantialCompletionDate' ||
-        source.key === 'table14TableDate'
+        source.key === 'table14TableDate' ||
+        (source.component && source.component.tags && source.component.tags.includes('conditional'))
       )) {
         // execute the conditional function directly
         ((instance, row) => {
